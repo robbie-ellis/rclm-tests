@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   htmlSplitBySpace.forEach((el) => {
     findTags(el);
   });
-  console.log(htmlSplitByTags);
+  //console.log(htmlSplitByTags);
 
   function findTags(el) {
     if (el.includes("<")) {
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const glossedWords = [];
+  const htmlGlossed = [];
   
   fetch("./gloss.json")
     .then(response => {
@@ -33,13 +33,26 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .then(response => {
       const dataSet = response.gloss;
-      //console.log(dataSet[0][0]);
+      const glossTerms = [];
+      const glossDescription = [];
+      dataSet.forEach((el) => {
+        glossTerms.push(el[0]);
+        glossDescription.push(el[1]);
+      });
+      //console.log(glossTerms);
+      //console.log(glossDescription);
       
-      /*
-      originTextWords.forEach((el) => {
-        if (dataSet)
-      })
-      */
+      htmlSplitByTags.forEach((el, index) => {
+        if (glossTerms.includes(el)) {
+          htmlGlossed.push(`<span class="gloss">${el}</span>`);
+        } else {
+          htmlGlossed.push(el);
+        }
+      });
+      console.log(htmlSplitByTags);
+      console.log(glossTerms);
+      console.log(htmlGlossed);
+      
       
     })
     .catch(error => {
