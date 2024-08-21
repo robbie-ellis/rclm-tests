@@ -1,9 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const tooltip = document.getElementById("tooltip");
   const originHtml = document.getElementById("first-paragraph");
-  const htmlSplitBySpace = originHtml.innerHTML.split(" ");
+  const htmlSplit = originHtml.innerHTML.split(" ");
+
+  const htmlSpacingElementsAdded = [];
+  htmlSplit.forEach((el, index) => {
+    htmlSpacingElementsAdded.push(el);
+    if (index < htmlSplit.length - 1) {
+      htmlSpacingElementsAdded.push(" ");
+    }
+  });
+  //console.log(htmlSpacingElementsAdded);
   const htmlSplitByTags = [];
   
-  htmlSplitBySpace.forEach((el) => {
+  htmlSpacingElementsAdded.forEach((el) => {
     findTags(el);
   });
   //console.log(htmlSplitByTags);
@@ -22,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const htmlGlossed = [];
+  const htmlWithGlossSpans = [];
   
   fetch("./gloss.json")
     .then(response => {
@@ -34,26 +44,55 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(response => {
       const dataSet = response.gloss;
       const glossTerms = [];
-      const glossDescription = [];
+      const glossDescriptions = [];
       dataSet.forEach((el) => {
         glossTerms.push(el[0]);
-        glossDescription.push(el[1]);
+        glossDescriptions.push(el[1]);
       });
       //console.log(glossTerms);
       //console.log(glossDescription);
       
-      htmlSplitByTags.forEach((el, index) => {
+      htmlSplitByTags.forEach((el) => {
         if (glossTerms.includes(el)) {
-          htmlGlossed.push(`<span class="gloss">${el}</span>`);
+          htmlWithGlossSpans.push(`<span class="gloss">${el}</span>`);
         } else {
-          htmlGlossed.push(el);
+          htmlWithGlossSpans.push(el);
         }
       });
-      console.log(htmlSplitByTags);
-      console.log(glossTerms);
-      console.log(htmlGlossed);
+      //console.log(htmlSplitByTags);
+      //console.log(glossTerms);
+      //console.log(htmlWithGlossSpans);
       
+      const htmlOutput = htmlWithGlossSpans.join("");
+      console.log(originHtml.innerHTML);
+      console.log(htmlOutput);
+
+      originHtml.innerHTML = htmlOutput;
+
+      function showToolTip(event) {
+        tooltip.innerText = 
+          glossDescriptions[glossTerms.indexOf(event.target.innerText)];
+        tooltip.style.opacity = 1;
+      };
       
+      function hideToolTip() {
+        tooltip.innerText = "";
+        tooltip.style.opacity = 0;
+      }
+
+      function captureMouseLocation(event) {
+        const x = event.clientX;
+        const y = event.clientY;
+        tooltip.style.left = `${x + 10}px`;
+        tooltip.style.top = `${y + 10}px`;
+      }
+      // Event listeners for the gloss tooltip
+      const glossClassElements = document.getElementsByClassName("gloss");
+      for (let i = 0; i < glossClassElements.length; i++) {
+        glossClassElements[i].addEventListener("mouseover", showToolTip);
+        glossClassElements[i].addEventListener("mouseout", hideToolTip);
+        glossClassElements[i].addEventListener("mousemove", captureMouseLocation);
+      };
     })
     .catch(error => {
       console.error("There was a problem fetching gloss.json", error);
