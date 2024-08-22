@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const glossButton = document.getElementById("toggle-gloss");
+  let tooltipOn = false;
   const tooltip = document.getElementById("tooltip");
   const originHtml = document.getElementById("first-paragraph");
   const htmlSplit = originHtml.innerHTML.split(" ");
@@ -69,10 +71,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
       originHtml.innerHTML = htmlOutput;
 
+      // Gloss button functionality
+      glossButton.addEventListener("click", toggleGloss);
+      function toggleGloss() {
+        tooltipOn = !tooltipOn;
+        const glosses = document.getElementsByClassName("gloss");
+        if (tooltipOn) {
+          for (let i = 0; i < glosses.length; i++) {
+            glosses[i].style.color = "orange";
+            glossButton.innerText = "Turn off gloss"
+          }
+        } else {
+          for (let i = 0; i < glosses.length; i++) {
+            glosses[i].style.color = "black";
+            glossButton.innerText = "Turn on gloss"
+          }
+        }
+      }
+      
       function showToolTip(event) {
-        tooltip.innerText = 
-          glossDescriptions[glossTerms.indexOf(event.target.innerText)];
-        tooltip.style.opacity = 1;
+        if (tooltipOn) {
+          tooltip.innerText = 
+            glossDescriptions[glossTerms.indexOf(event.target.innerText)];
+          tooltip.style.opacity = 1;
+        }
       };
       
       function hideToolTip() {

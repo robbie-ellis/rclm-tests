@@ -2,10 +2,6 @@ h1, p {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-.gloss:hover {
-  color: orange;
-}
-
 .tooltip {
   position: absolute;
   top: 50%;
@@ -16,4 +12,5 @@ h1, p {
   z-index: 10;
   opacity: 0;
   border-radius: 5px;
+  padding: 5px;
 }
