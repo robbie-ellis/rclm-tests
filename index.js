@@ -33,7 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
       })
       .then(response => {
         const dataSet = response.gloss;
-        //console.log(dataSet);
         dataSet.forEach((el) => {
           glossTerms.push(el[0]);
           glossDescriptions.push(el[1]);
@@ -130,7 +129,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (tooltipOn) {
       tooltip.innerText = 
         glossDescriptions[glossTerms.indexOf(event.target.innerText)];
-        //console.log(glossDescriptions[glossTerms.indexOf(event.target.innerText)]);
       tooltip.style.opacity = 1;
     }
   };
@@ -141,7 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tooltip.style.opacity = 0;
   }
 
-  //Aligns the tooltip right of, and under the word
+  //Aligns the tooltip to the right of, and under the word
   function captureMouseLocation(event) {
     const x = event.clientX;
     const y = event.clientY;
