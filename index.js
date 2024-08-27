@@ -13,9 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
   */
   if (manuscriptAuthor.includes("harley")) {
     getData("https://robbie-ellis.github.io/rclm-json/gloss.json");
-  } else if (manuscriptAuthor.includes("other")) { //replace other with manuscript name
-    getData("https://robbie-ellis.github.io/rclm-json/gloss.json"); //replace path with correct gloss path
-  } else if (manuscriptAuthor.includes("other-other")) {  //replace other-other with manuscript name
+  } else if (manuscriptAuthor.includes("egerton")) {
+    getData("https://robbie-ellis.github.io/egerton-json/egerton-gloss.json");
+  } else if (manuscriptAuthor.includes("other")) {  //replace other with manuscript name
     getData("https://robbie-ellis.github.io/rclm-json/gloss.json"); //replace path with correct gloss path
   };
 
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(response => {
         const dataSet = response.gloss;
         dataSet.forEach((el) => {
-          glossTerms.push(el[0]);
+          glossTerms.push(el[0].toLowerCase());
           glossDescriptions.push(el[1]);
         });
         processParagraphs();
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       const htmlWithGlossSpans = [];
       htmlSplitByTags.forEach((el) => {
-        if (glossTerms.includes(el)) {
+        if (glossTerms.includes(el.toLowerCase())) {
           htmlWithGlossSpans.push(`<span class="gloss">${el}</span>`);
         } else {
           htmlWithGlossSpans.push(el);
@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function showToolTip(event) {
     if (tooltipOn) {
       tooltip.innerText = 
-        glossDescriptions[glossTerms.indexOf(event.target.innerText)];
+        glossDescriptions[glossTerms.indexOf(event.target.innerText.toLowerCase())];
       tooltip.style.opacity = 1;
     }
   };
