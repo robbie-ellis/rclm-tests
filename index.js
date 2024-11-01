@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /*
   Actually fetches the data, and if successful executes processing 
-  or each paragraph and generation of gloss functionality
+  of each paragraph and generation of gloss functionality
   */ 
   function getData(url) {
     fetch(url)
